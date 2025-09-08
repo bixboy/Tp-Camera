@@ -1,0 +1,30 @@
+﻿using System;
+using UnityEngine;
+
+
+public abstract class AView : MonoBehaviour
+{
+    public float Weight;
+
+    public bool IsActiveOnStart;
+
+    public void Start()
+    {
+        if (IsActiveOnStart)
+            SetActive(true);
+    }
+
+    public virtual CameraConfiguration GetConfiguration()
+    {
+        return new CameraConfiguration();
+    }
+
+    public void SetActive(bool isActive)
+    {
+        if (isActive)
+            CameraController.Instance.AddView(this);
+        else
+            CameraController.Instance.RemoveView(this);
+    }
+
+}
