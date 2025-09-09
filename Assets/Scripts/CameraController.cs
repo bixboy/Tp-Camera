@@ -5,12 +5,12 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController Instance { get; private set; }
 
-    [SerializeField] private Camera _camera;
+    private Camera _camera;
     
-    [SerializeField] private float smoothSpeed = 5f; // vitesse de lissage (ajustable dans l’inspecteur)
+    [SerializeField] private float smoothSpeed = 5f;
 
-    private CameraConfiguration _currentConfig; // config appliquée à la caméra
-    private CameraConfiguration _targetConfig;  // config cible (ComputeAverage)
+    private CameraConfiguration _currentConfig;
+    private CameraConfiguration _targetConfig;
 
     private List<AView> _activeViews = new List<AView>();
 
@@ -26,8 +26,10 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        _camera = GetComponent<Camera>();
+        
         _targetConfig = ComputeAverage();
-        _currentConfig = _targetConfig; // init : courante = cible
+        _currentConfig = _targetConfig;
     }
 
     private void Update()
