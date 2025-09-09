@@ -24,8 +24,8 @@ public class Rail : MonoBehaviour
     {
         if (_nodes.Count == 0)
             return Vector3.zero;
-        
-        Vector3 firstNode = _nodes[0] 
+
+        Vector3 firstNode = _nodes[0];
         return transform.position;
     }
 }
