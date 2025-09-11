@@ -5,13 +5,10 @@ using UnityEngine;
 public abstract class AView : MonoBehaviour
 {
     public float Weight;
-
-    public bool IsActiveOnStart;
-
+    
     public void Start()
     {
-        if (IsActiveOnStart)
-            SetActive(true);
+        SetActive(true);
     }
 
     public virtual CameraConfiguration GetConfiguration()

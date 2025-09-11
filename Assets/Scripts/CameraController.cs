@@ -9,6 +9,8 @@ public class CameraController : MonoBehaviour
     
     [SerializeField] private float smoothSpeed = 5f;
 
+    private bool isCutRequested = false;
+
     private CameraConfiguration _currentConfig;
     private CameraConfiguration _targetConfig;
 
@@ -35,13 +37,24 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         _targetConfig = ComputeAverage();
-        SmoothTowardsTarget();
+
+        if (isCutRequested)
+        {
+            _currentConfig = _targetConfig;
+            isCutRequested = false;
+        }
+        else
+        {
+            SmoothTowardsTarget();    
+        }
+        
         ApplyConfiguration(_currentConfig);
     }
 
     private void ApplyConfiguration(CameraConfiguration config)
     {
-        if (_camera == null) return;
+        if (!_camera)
+            return;
 
         _camera.transform.rotation = config.GetRotation();
         _camera.transform.position = config.GetPosition();
@@ -123,6 +136,11 @@ public class CameraController : MonoBehaviour
         avg.yaw = Vector2.SignedAngle(Vector2.right, yawVector);
 
         return avg;
+    }
+
+    public void Cut()
+    {
+        isCutRequested = true;
     }
 
     private void OnDrawGizmos()
