@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
 
     private Rigidbody _rb;
-    private Vector2 _moveInput; // input brut (x,y)
+    private Vector2 _moveInput;
     private Vector3 _moveDirection;
 
     private void Awake()
@@ -25,15 +25,30 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Convertit en direction monde
-        _moveDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;
+        if (Camera.main)
+        {
+            Vector3 forward = Camera.main.transform.forward;
+            forward.y = 0;
+            forward.Normalize();
+
+            Vector3 right = Camera.main.transform.right;
+            right.y = 0;
+            right.Normalize();
+
+            _moveDirection = (right * _moveInput.x + forward * _moveInput.y).normalized;
+        }
+        else
+        {
+            _moveDirection = new Vector3(_moveInput.x, 0f, _moveInput.y).normalized;
+        }
     }
 
     private void FixedUpdate()
     {
-        // applique la vitesse au rigidbody
         Vector3 move = _moveDirection * moveSpeed;
         Vector3 velocity = new Vector3(move.x, _rb.linearVelocity.y, move.z);
+
         _rb.linearVelocity = velocity;
     }
+
 }
