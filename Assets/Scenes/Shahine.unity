@@ -286,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 392381372}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: -1.93}
+  m_LocalPosition: {x: -0.23, y: 1.2, z: -0.19}
   m_LocalScale: {x: 2.2374, y: 2.2374, z: 2.2374}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -975,7 +975,7 @@ MonoBehaviour:
   Roll: 27.15
   Fov: 87.32
   Target: {fileID: 1287530124}
-  CentralPoint: {fileID: 0}
+  CentralPoint: {fileID: 392381372}
   YawOffsetMax: 0
   PitchOffsetMax: 0
 --- !u!4 &1791968237
@@ -1028,8 +1028,8 @@ MonoBehaviour:
   Fov: 87.32
   Target: {fileID: 1287530124}
   CentralPoint: {fileID: 392381372}
-  YawOffsetMax: 0
-  PitchOffsetMax: 0
+  YawOffsetMax: 38.3
+  PitchOffsetMax: 26.31
 --- !u!4 &2103146839
 Transform:
   m_ObjectHideFlags: 0
