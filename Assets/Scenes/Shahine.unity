@@ -585,6 +585,7 @@ GameObject:
   - component: {fileID: 1287530125}
   - component: {fileID: 1287530128}
   - component: {fileID: 1287530127}
+  - component: {fileID: 1287530129}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -762,6 +763,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1287530129}
+        m_TargetAssemblyTypeName: FreeFollowView, Assembly-CSharp
+        m_MethodName: OnPlayerMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
@@ -841,6 +854,41 @@ MonoBehaviour:
   m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1287530129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287530120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e0e80a2c724861b13eea04bad40ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Weight: 0.221
+  Pitch:
+  - -15
+  - 0
+  - 50
+  Roll:
+  - 0
+  - 0
+  - 0
+  Fov:
+  - 90
+  - 100
+  - 110
+  Yaw: 10.98
+  YawSpeed: 0
+  Target: {fileID: 1287530124}
+  Curve:
+    A: {x: 0, y: -1.29, z: -2.83}
+    B: {x: 0, y: -1.2, z: -10.39}
+    C: {x: 0, y: 4.11, z: -8.93}
+    D: {x: 0, y: 3.21, z: -2.33}
+  CurvePosition: 0.521
+  CurveSpeed: 1
 --- !u!1 &1722065166
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1722065167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,7 +919,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 0.18
-  IsActiveOnStart: 0
   Yaw: -228.1
   Pitch: 0
   Roll: 0
@@ -907,7 +954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1761997422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,7 +968,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 0.876
-  IsActiveOnStart: 0
   Yaw: -138.4
   Pitch: 0
   Roll: 0
@@ -957,7 +1003,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1791968236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,7 +1017,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 0
-  IsActiveOnStart: 0
   Roll: 27.15
   Fov: 87.32
   Target: {fileID: 1287530124}
@@ -1009,7 +1054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2103146838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1023,7 +1068,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 1
-  IsActiveOnStart: 1
   Roll: 3.84
   Fov: 87.32
   Target: {fileID: 1287530124}
