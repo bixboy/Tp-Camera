@@ -4,17 +4,17 @@ using System.Collections.Generic;
 public class CameraController : MonoBehaviour
 {
     public static CameraController Instance { get; private set; }
-
     private Camera _camera;
-    
+
     [SerializeField] private float smoothSpeed = 5f;
 
     private bool isCutRequested = false;
-
     private CameraConfiguration _currentConfig;
     private CameraConfiguration _targetConfig;
 
     private List<AView> _activeViews = new List<AView>();
+
+    private readonly List<CameraShake> _activeShakes = new List<CameraShake>();
 
     private void Awake()
     {
@@ -29,7 +29,6 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         _camera = GetComponent<Camera>();
-        
         _targetConfig = ComputeAverage();
         _currentConfig = _targetConfig;
     }
@@ -47,7 +46,7 @@ public class CameraController : MonoBehaviour
         {
             SmoothTowardsTarget();    
         }
-        
+
         ApplyConfiguration(_currentConfig);
     }
 
@@ -59,6 +58,41 @@ public class CameraController : MonoBehaviour
         _camera.transform.rotation = config.GetRotation();
         _camera.transform.position = config.GetPosition();
         _camera.fieldOfView = config.fov;
+
+        if (_activeShakes.Count > 0)
+        {
+            Vector3 posOffset = Vector3.zero;
+            Vector3 rotOffset = Vector3.zero;
+            float fovOffset = 0f;
+
+            float dt = Time.deltaTime;
+            for (int i = _activeShakes.Count - 1; i >= 0; i--)
+            {
+                var shake = _activeShakes[i];
+                shake.Update(dt);
+
+                posOffset += shake.GetPositionOffset();
+                rotOffset += shake.GetRotationOffset();
+                fovOffset += shake.GetFovOffset();
+
+                if (shake.IsFinished)
+                    _activeShakes.RemoveAt(i);
+            }
+
+            _camera.transform.position += posOffset;
+            _camera.transform.rotation *= Quaternion.Euler(rotOffset);
+            _camera.fieldOfView += fovOffset;
+        }
+    }
+    public void PlayShake(CameraShake shake)
+    {
+        shake.Reset();
+        _activeShakes.Add(shake);
+    }
+
+    public void ClearShakes()
+    {
+        _activeShakes.Clear();
     }
 
     private void SmoothTowardsTarget()
