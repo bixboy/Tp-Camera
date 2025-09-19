@@ -14,12 +14,14 @@ public class SphereViewVolume : AViewVolume
 
     private void Update()
     {
+        if (!target) return;
+
         _distance = Vector3.Distance(target.transform.position, transform.position);
-        
+
         if (_distance <= outerRadius && !IsActive)
             SetActive(true);
-        
-        if (_distance > innerRadius && IsActive)
+
+        if (_distance > outerRadius && IsActive)
             SetActive(false);
     }
 
@@ -31,7 +33,7 @@ public class SphereViewVolume : AViewVolume
         float d = _distance;
 
         float inner = Mathf.Max(0f, innerRadius);
-        float outer = Mathf.Max(inner, outerRadius);
+        float outer = Mathf.Max(inner + 0.01f, outerRadius);
 
         if (d <= inner)
             return 1.0f;
@@ -40,14 +42,15 @@ public class SphereViewVolume : AViewVolume
             return 0.0f;
 
         float t = (d - inner) / (outer - inner);
-        float weight = 1.0f - t;
-
-        return Mathf.Clamp01(weight);
+        return 1.0f - t;
     }
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, innerRadius);
+
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, outerRadius);
     }
 }

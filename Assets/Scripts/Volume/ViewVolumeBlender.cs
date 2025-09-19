@@ -10,6 +10,16 @@ public class ViewVolumeBlender : MonoBehaviour
     
     private List<AViewVolume> _activeViewVolumes = new List<AViewVolume>();
     private Dictionary<AView, List<AViewVolume>> _volumesPerViews = new Dictionary<AView, List<AViewVolume>>();
+    
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+    }
 
 
     public void AddVolume(AViewVolume volume)

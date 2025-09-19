@@ -534,8 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c104c9a6cef8f264a8b9db1667577373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 70
-  IsActiveOnStart: 1
+  Weight: 1
   roll: 0
   distance: 10
   fov: 60
@@ -672,7 +671,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 5
-  IsActiveOnStart: 0
   Yaw: 90
   Pitch: 0
   Roll: 0
@@ -736,8 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c104c9a6cef8f264a8b9db1667577373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 50
-  IsActiveOnStart: 1
+  Weight: 1
   roll: 0
   distance: 10
   fov: 60
@@ -886,7 +883,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weight: 100
-  IsActiveOnStart: 0
   Yaw: 0
   Pitch: 0
   Roll: 0
@@ -950,8 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c104c9a6cef8f264a8b9db1667577373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 10
-  IsActiveOnStart: 1
+  Weight: 1
   roll: 0
   distance: 10
   fov: 60
@@ -1037,8 +1032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c104c9a6cef8f264a8b9db1667577373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 30
-  IsActiveOnStart: 1
+  Weight: 1
   roll: 0
   distance: 10
   fov: 60
