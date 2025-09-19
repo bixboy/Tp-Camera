@@ -182,7 +182,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 8053453193115122806}
         m_TargetAssemblyTypeName: FreeFollowView, Assembly-CSharp
-        m_MethodName: OnPlayerMove
+        m_MethodName: OnPlayerMoveMouse
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

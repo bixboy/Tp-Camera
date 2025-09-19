@@ -6,10 +6,6 @@ public abstract class AView : MonoBehaviour
     [Range(0f, 1f)]
     public float Weight;
     
-    public void Start()
-    {
-        SetActive(true);
-    }
 
     public virtual CameraConfiguration GetConfiguration()
     {

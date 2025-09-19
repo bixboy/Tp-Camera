@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FreeFollowView : AView
@@ -19,19 +20,43 @@ public class FreeFollowView : AView
     [Header("Collision")]
     public float SphereRadius = 0.3f;
     public LayerMask ObstacleMask;
-    public float CollisionBuffer = 0.2f;
+    public float CollisionAvoidanceOffset = 0.2f;
 
-    private Vector2 moveInput;
+    private Vector2 _moveInput;
+    private bool _canDragCam;
 
-    public void OnPlayerMove(InputAction.CallbackContext context)
+    private void Start()
     {
-        moveInput = context.ReadValue<Vector2>();
+        SetActive(true);
+        _canDragCam = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        SetActive(false);
+        _canDragCam = false;
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        SetActive(true);
+        _canDragCam = true;
+    }
+
+    public void OnPlayerMoveMouse(InputAction.CallbackContext context)
+    {
+        _moveInput = Vector2.zero;
+        if (Input.GetMouseButton(0) && _canDragCam)
+            _moveInput = context.ReadValue<Vector2>();
+        
     }
 
     private void Update()
     {
-        Yaw += moveInput.x * YawSpeed * Time.deltaTime;
-        CurvePosition = Mathf.Clamp01(CurvePosition + moveInput.y * CurveSpeed * Time.deltaTime);
+        Yaw += _moveInput.x * YawSpeed * Time.deltaTime;
+        Yaw = Mathf.Repeat(Yaw, 360f);
+
+        CurvePosition = Mathf.Clamp01(CurvePosition + -_moveInput.y * CurveSpeed * Time.deltaTime);
     }
 
 
@@ -55,7 +80,7 @@ public class FreeFollowView : AView
         
         if (Physics.SphereCast(Target.position, SphereRadius, dir.normalized, out RaycastHit hit, desiredDistance, ObstacleMask))
         {
-            camPos = Target.position + dir.normalized * (hit.distance - CollisionBuffer);
+            camPos = Target.position + dir.normalized * (hit.distance - CollisionAvoidanceOffset);
         }
 
         float pitchValue = Mathf.Lerp(
