@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
         _rb.freezeRotation = true;
     }
 
-
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();

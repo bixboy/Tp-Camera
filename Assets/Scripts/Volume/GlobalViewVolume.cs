@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-public class GlobalViewVolume : AViewVolume
+﻿public class GlobalViewVolume : AViewVolume
 {
     private void Start()
     {
