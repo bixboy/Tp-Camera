@@ -148,7 +148,7 @@ public class CameraController : MonoBehaviour
         if (_camera != null)
         {
             _currentConfig.DrawGizmos(Color.green);
-            _targetConfig.DrawGizmos(Color.red); // debug : voir la cible
+            _targetConfig.DrawGizmos(Color.red);
         }
     }
 }

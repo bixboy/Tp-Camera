@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class FreeFollowView : AView
 {
-    [Header("Configs (bottom=0, middle=0.5, top=1)")]
+    [Header("Configs Bottom=0, Middle=0.5, Top=1")]
     public float[] Pitch = new float[3];
     public float[] Roll  = new float[3];
     public float[] Fov   = new float[3];
@@ -15,17 +15,21 @@ public class FreeFollowView : AView
     public Curve Curve;
     [Range(0f, 1f)] public float CurvePosition;
     public float CurveSpeed = 1f;
+    
+    [Header("Collision")]
+    public float SphereRadius = 0.3f;
+    public LayerMask ObstacleMask;
+    public float CollisionBuffer = 0.2f;
 
     private Vector2 moveInput;
 
     public void OnPlayerMove(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>(); // stocker l’input courant
+        moveInput = context.ReadValue<Vector2>();
     }
 
     private void Update()
     {
-        // appliquer en continu
         Yaw += moveInput.x * YawSpeed * Time.deltaTime;
         CurvePosition = Mathf.Clamp01(CurvePosition + moveInput.y * CurveSpeed * Time.deltaTime);
     }
@@ -34,18 +38,26 @@ public class FreeFollowView : AView
     private Matrix4x4 CurveToWorldMatrix()
     {
         return Matrix4x4.TRS(
-            Target.position,          // translation
-            Quaternion.Euler(0, Yaw, 0), // rotation autour de Y
-            Vector3.one               // pas d’échelle
+            Target.position,          
+            Quaternion.Euler(0, Yaw, 0), 
+            Vector3.one              
         );
     }
 
     public override CameraConfiguration GetConfiguration()
     {
         Matrix4x4 curveToWorld = CurveToWorldMatrix();
-        Vector3 cameraWorldPos = Curve.GetPosition(CurvePosition, curveToWorld);
+        Vector3 desiredPos = Curve.GetPosition(CurvePosition, curveToWorld);
 
-        // Interpolation entre bottom (0), middle (0.5) et top (1)
+        Vector3 dir = desiredPos - Target.position;
+        float desiredDistance = dir.magnitude;
+        Vector3 camPos = desiredPos;
+        
+        if (Physics.SphereCast(Target.position, SphereRadius, dir.normalized, out RaycastHit hit, desiredDistance, ObstacleMask))
+        {
+            camPos = Target.position + dir.normalized * (hit.distance - CollisionBuffer);
+        }
+
         float pitchValue = Mathf.Lerp(
             Mathf.Lerp(Pitch[0], Pitch[1], CurvePosition * 2f),
             Mathf.Lerp(Pitch[1], Pitch[2], (CurvePosition - 0.5f) * 2f),
@@ -70,33 +82,23 @@ public class FreeFollowView : AView
             pitch = pitchValue,
             roll = rollValue,
             fov = fovValue,
-            pivot = cameraWorldPos,
+            pivot = camPos,
             distance = 0f
         };
-    }
-    
-    public CameraConfiguration GetConfigurationAtCurvePosition(float curvePosition)
-    {
-        Matrix4x4 curveToWorld = CurveToWorldMatrix();
-
-        Vector3 cameraWorldPos = Curve.GetPosition(CurvePosition, curveToWorld);
-
-        CameraConfiguration config = new CameraConfiguration
-        {
-            yaw = Yaw,
-            pitch = Mathf.Lerp(Pitch[0], Pitch[2], curvePosition),
-            roll  = Mathf.Lerp(Roll[0],  Roll[2],  curvePosition),
-            fov   = Mathf.Lerp(Fov[0],   Fov[2],   curvePosition),
-            pivot = cameraWorldPos,
-            distance = 0f
-        };
-
-        return config;
     }
     
     private void OnDrawGizmos()
     {
-        Curve.DrawGizmo(Color.red, CurveToWorldMatrix());
+        Matrix4x4 curveToWorld = CurveToWorldMatrix();
+        Curve.DrawGizmo(Color.red, curveToWorld);
+
+
+        Vector3 desiredPos = Curve.GetPosition(CurvePosition, curveToWorld);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(Target.position, desiredPos);
+        Gizmos.DrawWireSphere(desiredPos, SphereRadius);
+        
+        
         DrawCamera(Color.red, 0);
         DrawCamera(Color.green, 1);
         DrawCamera(Color.blue, 2);
@@ -105,22 +107,11 @@ public class FreeFollowView : AView
     public void DrawCamera(Color color, int cameraIndex)
     {
         Gizmos.color = color;
-
         Matrix4x4 curveToWorld = CurveToWorldMatrix();
-        float t = cameraIndex / 2f; // 0, 0.5, 1
-
-        // Position caméra correctement transformée
-        Vector3 position = Curve.GetPosition(t, curveToWorld);
-
-        Gizmos.matrix = Matrix4x4.TRS(
-            position,
-            Quaternion.Euler(Pitch[cameraIndex], Yaw, Roll[cameraIndex]),
-            Vector3.one
-        );
-
-        if (Camera.main != null)
+        Vector3 position = Curve.GetPosition(cameraIndex / 2f, curveToWorld);
+        Gizmos.matrix = Matrix4x4.TRS(position, Quaternion.Euler(Pitch[cameraIndex], Yaw, Roll[cameraIndex]), Vector3.one);
+        if (Camera.main != null) 
             Gizmos.DrawFrustum(Vector3.zero, Fov[cameraIndex], 0.5f, 0f, Camera.main.aspect);
-
         Gizmos.matrix = Matrix4x4.identity;
     }
 

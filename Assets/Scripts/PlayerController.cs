@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // obligatoire pour CallbackContext
+using UnityEngine.InputSystem;
 
 
 public class PlayerController : MonoBehaviour
